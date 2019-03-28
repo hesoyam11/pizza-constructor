@@ -1,3 +1,5 @@
 from django.contrib import admin
+from constructor.models import IngredientGroup, Ingredient
 
-# Register your models here.
+admin.site.register(IngredientGroup)
+admin.site.register(Ingredient)
