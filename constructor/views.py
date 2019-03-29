@@ -1,3 +1,11 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def pizza_construct(request):
+    return render(
+        request,
+        'constructor/pizza_constructor.html',
+        {
+
+        }
+    )
