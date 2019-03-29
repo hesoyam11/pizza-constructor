@@ -1,5 +1,28 @@
 {% extends 'constructor/base.html' %}
 
 {% block content %}
-
+<form method="post">
+    {% csrf_token %}
+    <h2>Dough</h2>
+    <div>
+        <input type="radio" id="white" name="dough" value="W" checked>
+        <label for="white">White</label>
+        <input type="radio" id="black" name="dough" value="B">
+        <label for="black">Black</label>
+    </div>
+    <h2>Ingredients</h2>
+    {% for group in groups %}
+        <div class="ingredient-group">
+            <h3>{{ group.name }}</h3>
+            {% for ingredient in group.ingredients.all %}
+                <div class="ingredient">
+                    <label for="{{ ingredient.id }}">{{ ingredient.name }}: ${{ ingredient.price }}</label>
+                    <br>
+                    <input id="{{ ingredient.id }}" name="{{ ingredient.id }}" type="number" min="0" max="100" value="0">
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Order the pizza">
+</form>
 {% endblock %}
