@@ -3,26 +3,60 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    <h2>Dough</h2>
-    <div>
-        <input type="radio" id="white" name="dough" value="W" checked>
-        <label for="white">White</label>
-        <input type="radio" id="black" name="dough" value="B">
-        <label for="black">Black</label>
-    </div>
-    <h2>Ingredients</h2>
-    {% for group in groups %}
-        <div class="ingredient-group">
-            <h3>{{ group.name }}</h3>
-            {% for ingredient in group.ingredients.all %}
-                <div class="ingredient">
-                    <label for="{{ ingredient.id }}">{{ ingredient.name }}: ${{ ingredient.price }}</label>
-                    <br>
-                    <input id="{{ ingredient.id }}" name="{{ ingredient.id }}" type="number" min="0" max="100" value="0">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#construct-pizza">Construct your pizza</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#make-order">Make an order</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="construct-pizza" class="tab-pane fade in active">
+            <h2>Dough</h2>
+            <div>
+                <input type="radio" id="white" name="dough" value="W" checked>
+                <label for="white">White</label>
+                <input type="radio" id="black" name="dough" value="B">
+                <label for="black">Black</label>
+            </div>
+
+            <h2>Ingredients</h2>
+            {% for group in groups %}
+                <div class="ingredient-group">
+                    <h3>{{ group.name }}</h3>
+                    {% for ingredient in group.ingredients.all %}
+                        <div class="ingredient">
+                            <label for="{{ ingredient.id }}">
+                                {{ ingredient.name }}: $<span class="price">{{ ingredient.price }}</span>
+                            </label>
+                            <br>
+                            <input id="{{ ingredient.id }}" name="{{ ingredient.id }}" type="number" min="0" max="100" value="0">
+                        </div>
+                    {% endfor %}
                 </div>
             {% endfor %}
+
+            <button id="order-btn" type="button">
+                Go to order
+            </button>
         </div>
-    {% endfor %}
-    <input type="submit" value="Order the pizza">
+
+        <div id="make-order" class="tab-pane fade">
+            <div>
+                <label for="customer-name">Your Name:</label><br>
+                <input id="customer-name" name="customer_name" required><br>
+
+                <label for="phone-number">Phone Number:</label><br>
+                <input id="phone-number" name="phone_number" placeholder="e.g., +123456789 (from 9 to 15 digits)" required><br>
+
+                <label for="email">Your Email:</label><br>
+                <input id="email" type="email" name="email" required>
+            </div>
+
+            <input type="submit" value="Order the pizza">
+        </div>
+    </div>
 </form>
 {% endblock %}
