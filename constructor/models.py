@@ -1,7 +1,9 @@
 from decimal import Decimal
+from functools import partial
 from django.db import models
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
+from .tokens import generate_token
 
 
 class IngredientGroup(models.Model):
@@ -77,6 +79,7 @@ class PizzaOrder(models.Model):
                                       validators=[MinValueValidator(Decimal('0.01'))])
     date_created = models.DateTimeField(default=timezone.now)
     date_confirmed = models.DateTimeField(null=True)
+    confirmation_token = models.CharField(max_length=64, default=partial(generate_token, 64))
 
     def __str__(self):
         return ', '.join([self.customer_name, self.email, '{:.2f}'.format(self.order_price)])
