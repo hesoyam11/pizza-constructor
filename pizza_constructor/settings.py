@@ -121,6 +121,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+# WARNING: Those settings should be reassigned in `local_settings.py`.
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.example.com'
+EMAIL_HOST_USER = 'abc@example.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
+
+
 # Create `local_settings.py` file in the same directory
 # with specific to a local environment settings.
 
