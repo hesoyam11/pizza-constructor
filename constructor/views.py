@@ -1,26 +1,17 @@
 from decimal import Decimal
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest
-from .models import IngredientGroup, PizzaOrder
+from .models import IngredientGroup, Ingredient
 from .forms import PizzaOrderForm
 
 
 def pizza_construct(request):
     groups = IngredientGroup.objects.all()
+    ingredients = Ingredient.objects.all()
 
     if request.method == 'POST':
-        try:
-            # dough = request.POST['dough']
-            # customer_name = request.POST['customer_name']
-            # email = request.POST['email']
-            # phone_number = request.POST['phone_number']
-            pizza_order_form = PizzaOrderForm(request.POST)
-        except KeyError:
-            return HttpResponseBadRequest(
-                content="One of the required params not specified."
-            )
+        pizza_order_form = PizzaOrderForm(request.POST)
 
-        # print(dough, customer_name, email, phone_number)
         if not pizza_order_form.is_valid():
             return render(
                 request,
@@ -30,8 +21,28 @@ def pizza_construct(request):
                     'form': pizza_order_form
                 }
             )
-        else:
-            print('POST OK')
+
+        order_price = Decimal(0)
+
+        for ingredient in ingredients:
+            if str(ingredient.id) in request.POST:
+                try:
+                    amount = int(request.POST[str(ingredient.id)])
+                    if not 0 <= amount <= 100:
+                        raise ValueError
+                except ValueError:
+                    return HttpResponseBadRequest(
+                        content='Invalid ingredient amount format.'
+                    )
+                if amount > 0:
+                    order_price += ingredient.price * Decimal(amount)
+
+        if str(order_price) != request.POST['order_price']:
+            return HttpResponseBadRequest(
+                content='Client-side order price is outdated.'
+            )
+
+        print(order_price)
 
     return render(
         request,
