@@ -10,7 +10,7 @@
             <a data-toggle="tab" href="#construct-pizza">Construct your pizza</a>
         </li>
         <li>
-            <a data-toggle="tab" href="#make-order">Make an order</a>
+            <a id="make-order-anchor" data-toggle="tab" href="#make-order">Make an order</a>
         </li>
     </ul>
 
@@ -49,7 +49,7 @@
             {% endfor %}
 
             <button id="order-btn" type="button">
-                Go to order
+                Order the pizza
             </button>
         </div>
 
@@ -65,11 +65,12 @@
                 <input id="email" type="email" name="email" value="a@b.com" required>
             </div>
 
-            <input type="submit" value="Order the pizza">
+            <input type="submit" value="Send a confirmation letter to the specified email">
         </div>
     </div>
 </form>
 
+<script src="{% static 'js/order-btn.js' %}"></script>
 <script src="{% static 'js/order-price-count.js' %}"></script>
 
 {% endblock %}
