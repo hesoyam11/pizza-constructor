@@ -1,5 +1,7 @@
 {% extends 'constructor/base.html' %}
 
+{% load static %}
+
 {% block content %}
 <form method="post">
     {% csrf_token %}
@@ -11,6 +13,14 @@
             <a data-toggle="tab" href="#make-order">Make an order</a>
         </li>
     </ul>
+
+    <h2>Order Price</h2>
+    <p>$<span id="order-price-span">0.00</span></p>
+    <input id="order-price-input" type="hidden" name="order_price" value="0.00">
+
+    {% if form %}
+        {{ form.errors }}
+    {% endif %}
 
     <div class="tab-content">
         <div id="construct-pizza" class="tab-pane fade in active">
@@ -46,17 +56,20 @@
         <div id="make-order" class="tab-pane fade">
             <div>
                 <label for="customer-name">Your Name:</label><br>
-                <input id="customer-name" name="customer_name" required><br>
+                <input id="customer-name" name="customer_name" value="Vadym" required><br>
 
                 <label for="phone-number">Phone Number:</label><br>
-                <input id="phone-number" name="phone_number" placeholder="e.g., +123456789 (from 9 to 15 digits)" required><br>
+                <input id="phone-number" name="phone_number" value="+123456789" placeholder="e.g., +123456789 (from 9 to 15 digits)" required><br>
 
                 <label for="email">Your Email:</label><br>
-                <input id="email" type="email" name="email" required>
+                <input id="email" type="email" name="email" value="a@b.com" required>
             </div>
 
             <input type="submit" value="Order the pizza">
         </div>
     </div>
 </form>
+
+<script src="{% static 'js/order-price-count.js' %}"></script>
+
 {% endblock %}
