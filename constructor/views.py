@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.shortcuts import render
 from django.http import HttpResponseBadRequest
-from .models import IngredientGroup, Ingredient
+from .models import IngredientGroup, Ingredient, IngredientAmount
 from .forms import PizzaOrderForm
 
 
@@ -23,6 +23,7 @@ def pizza_construct(request):
             )
 
         order_price = Decimal(0)
+        amounts = []
 
         for ingredient in ingredients:
             if str(ingredient.id) in request.POST:
@@ -36,13 +37,29 @@ def pizza_construct(request):
                     )
                 if amount > 0:
                     order_price += ingredient.price * Decimal(amount)
+                    amounts.append(IngredientAmount(
+                        fixed_price=ingredient.price,
+                        amount=amount,
+                        ingredient=ingredient
+                    ))
 
         if str(order_price) != request.POST['order_price']:
             return HttpResponseBadRequest(
                 content='Client-side order price is outdated.'
             )
 
-        print(order_price)
+        pizza_order = pizza_order_form.save()
+        for ingredient_amount in amounts:
+            ingredient_amount.pizza_order = pizza_order
+            ingredient_amount.save()
+
+        return render(
+            request,
+            'constructor/order_confirmation.html',
+            {
+                'email': pizza_order.email
+            }
+        )
 
     return render(
         request,

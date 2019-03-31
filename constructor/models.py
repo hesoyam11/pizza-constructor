@@ -1,6 +1,6 @@
 from decimal import Decimal
-from datetime import datetime
 from django.db import models
+from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 
 
@@ -75,7 +75,7 @@ class PizzaOrder(models.Model):
     email = models.EmailField()
     order_price = models.DecimalField(max_digits=8, decimal_places=2,
                                       validators=[MinValueValidator(Decimal('0.01'))])
-    date_created = models.DateTimeField(default=datetime.now)
+    date_created = models.DateTimeField(default=timezone.now)
     date_confirmed = models.DateTimeField(null=True)
 
     def __str__(self):
