@@ -1,5 +1,9 @@
 <p>Hello {{ pizza_order.customer_name }},</p>
 
+<p>You have ordered a pizza at our website.</p>
+
+<p>Order price: ${{ pizza_order.order_price }}</p>
+
 <p>
     <a href="http://{{ domain }}{% url 'order_confirm' order_id=pizza_order.id token=pizza_order.confirmation_token %}">Visit the confirmation page</a> to confirm your order.
 </p>
