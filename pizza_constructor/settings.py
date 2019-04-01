@@ -135,8 +135,8 @@ EMAIL_PORT = 465
 
 try:
     from .local_settings import *
-except ImportError:
-    pass
+except ImportError as e:
+    raise ImportError('You have to create `local_setting.py` file to run the project.')
 
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
