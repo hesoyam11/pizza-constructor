@@ -70,7 +70,7 @@ def pizza_construct(request):
             mail.send_mail(
                 mail_subject,
                 plain_message,
-                f'Pizza Constructor { EMAIL_HOST_USER }',
+                'Pizza Constructor {0}'.format(EMAIL_HOST_USER),
                 [pizza_order.email],
                 html_message=html_message
             )
